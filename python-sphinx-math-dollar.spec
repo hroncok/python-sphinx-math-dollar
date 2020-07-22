@@ -20,15 +20,12 @@ BuildRequires:  python3dist(sphinx-testing)
 sphinx-math-dollar is a Sphinx extension to let you write LaTeX math
 using $$.}
 
-%description
-%_desc
+%description %_desc
 
 %package     -n python3-%{srcname}
 Summary:        Sphinx extension to enable LaTeX math with $$
-%{?python_provide:%python_provide python3-%{srcname}}
 
-%description -n python3-%{srcname}
-%_desc
+%description -n python3-%{srcname} %_desc
 
 %package        doc
 Summary:        Documentation for %{srcname}
