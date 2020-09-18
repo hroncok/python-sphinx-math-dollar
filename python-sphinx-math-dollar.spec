@@ -1,8 +1,8 @@
 %global srcname sphinx-math-dollar
 
 Name:           python-%{srcname}
-Version:        1.1.1
-Release:        4%{?dist}
+Version:        1.2
+Release:        1%{?dist}
 Summary:        Sphinx extension to enable LaTeX math with $$
 
 License:        MIT
@@ -11,10 +11,10 @@ Source0:        https://github.com/sympy/%{srcname}/archive/%{version}/%{srcname
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(pytest-doctestplus)
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(sphinx)
-BuildRequires:  python3dist(sphinx-testing)
+BuildRequires:  %{py3_dist pytest-doctestplus}
+BuildRequires:  %{py3_dist setuptools}
+BuildRequires:  %{py3_dist sphinx}
+BuildRequires:  %{py3_dist sphinx-testing}
 
 %global _desc %{expand:
 sphinx-math-dollar is a Sphinx extension to let you write LaTeX math
@@ -61,6 +61,9 @@ pytest
 %license LICENSE
 
 %changelog
+* Fri Sep 18 2020 Jerry James <loganjerry@gmail.com> - 1.2-1
+- Version 1.2
+
 * Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
