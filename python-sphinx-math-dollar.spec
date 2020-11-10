@@ -10,6 +10,7 @@ URL:            https://www.sympy.org/%{srcname}/
 Source0:        https://github.com/sympy/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
+BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  %{py3_dist pytest-doctestplus}
 BuildRequires:  %{py3_dist setuptools}
