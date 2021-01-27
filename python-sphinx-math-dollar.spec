@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Sphinx extension to enable LaTeX math with $$
 
 License:        MIT
@@ -62,6 +62,9 @@ pytest
 %license LICENSE
 
 %changelog
+* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Fri Sep 18 2020 Jerry James <loganjerry@gmail.com> - 1.2-1
 - Version 1.2
 
