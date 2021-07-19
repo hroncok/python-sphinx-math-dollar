@@ -50,7 +50,7 @@ rm -f docs/_build/html/.{buildinfo,nojekyll}
 %py3_install
 
 %check
-pytest
+%pytest
 
 %files       -n python3-%{srcname}
 %doc CHANGELOG.html README.html
