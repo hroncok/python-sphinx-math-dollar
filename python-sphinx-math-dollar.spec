@@ -2,20 +2,25 @@
 
 Name:           python-%{srcname}
 Version:        1.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Sphinx extension to enable LaTeX math with $$
 
 License:        MIT
 URL:            https://www.sympy.org/%{srcname}/
 Source0:        https://github.com/sympy/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
+# Update versioneer.py to fix FTBFS with python 3.11
+# See https://github.com/sympy/sphinx-math-dollar/issues/27
+Patch0:         %{name}-versioneer.patch
 
 BuildArch:      noarch
 BuildRequires:  make
 BuildRequires:  python3-devel
+BuildRequires:  %{py3_dist pip}
 BuildRequires:  %{py3_dist pytest-doctestplus}
 BuildRequires:  %{py3_dist setuptools}
 BuildRequires:  %{py3_dist sphinx}
 BuildRequires:  %{py3_dist sphinx-testing}
+BuildRequires:  %{py3_dist wheel}
 
 %global _desc %{expand:
 sphinx-math-dollar is a Sphinx extension to let you write LaTeX math
@@ -35,10 +40,10 @@ Summary:        Documentation for %{srcname}
 Documentation for %{srcname}.
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{srcname}-%{version} -p1
 
 %build
-%py3_build
+%pyproject_wheel
 
 # Build the documentation
 make -C docs html
@@ -47,7 +52,7 @@ rst2html --no-datestamp README.rst README.html
 rm -f docs/_build/html/.{buildinfo,nojekyll}
 
 %install
-%py3_install
+%pyproject_install
 
 %check
 %pytest
@@ -62,6 +67,10 @@ rm -f docs/_build/html/.{buildinfo,nojekyll}
 %license LICENSE
 
 %changelog
+* Mon Dec 20 2021 Jerry James <loganjerry@gmail.com> - 1.2-5
+- Add -versioneer patch to fix FTBFS with python 3.11
+- Update python macros
+
 * Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 

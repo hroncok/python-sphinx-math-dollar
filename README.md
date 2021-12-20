@@ -1,3 +1,4 @@
 # python-sphinx-math-dollar
 
-The python-sphinx-math-dollar package
+[sphinx-math-dollar](https://www.sympy.org/sphinx-math-dollar/) is a Sphinx
+extension to let you write LaTeX math using `$$`.
