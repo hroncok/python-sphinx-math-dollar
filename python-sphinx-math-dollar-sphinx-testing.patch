@@ -1,0 +1,96 @@
+diff --git a/.github/workflows/pythonpackage.yml b/.github/workflows/pythonpackage.yml
+index fba229b..8f7fc46 100644
+--- a/.github/workflows/pythonpackage.yml
++++ b/.github/workflows/pythonpackage.yml
+@@ -26,5 +26,5 @@ jobs:
+         pyflakes .
+     - name: Test with pytest
+       run: |
+-        pip install pytest pytest-doctestplus sphinx-testing
++        pip install pytest pytest-doctestplus
+         pytest
+diff --git a/conftest.py b/conftest.py
+index 5a17f7a..eef86c1 100644
+--- a/conftest.py
++++ b/conftest.py
+@@ -1,5 +1,17 @@
++import pytest
++from sphinx.testing.path import path
++
++
+ try:
+     import pytest_doctestplus.plugin
+     pytest_doctestplus
+ except ImportError:
+     raise ImportError("Install pytest-doctestplus to run the tests")
++
++
++pytest_plugins = 'sphinx.testing.fixtures'
++
++
++@pytest.fixture(scope='session')
++def rootdir():
++    return path(__file__).parent.abspath() / 'sphinx_math_dollar' / 'tests'
+diff --git a/docs/__init__.py b/docs/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/setup.py b/setup.py
+index 62b2da5..73a4371 100644
+--- a/setup.py
++++ b/setup.py
+@@ -14,7 +14,7 @@ setuptools.setup(
+     description="Sphinx extension to let you write LaTeX math using $$",
+     long_description=long_description,
+     url="https://github.com/sympy/sphinx-math-dollar/",
+-    packages=setuptools.find_packages(),
++    packages=setuptools.find_packages(exclude=["docs"]),
+     classifiers=[
+         "Programming Language :: Python :: 2",
+         "Programming Language :: Python :: 3",
+diff --git a/sphinx_math_dollar/tests/test-build/Makefile b/sphinx_math_dollar/tests/test-root/Makefile
+similarity index 100%
+rename from sphinx_math_dollar/tests/test-build/Makefile
+rename to sphinx_math_dollar/tests/test-root/Makefile
+diff --git a/sphinx_math_dollar/tests/test-build/conf.py b/sphinx_math_dollar/tests/test-root/conf.py
+similarity index 100%
+rename from sphinx_math_dollar/tests/test-build/conf.py
+rename to sphinx_math_dollar/tests/test-root/conf.py
+diff --git a/sphinx_math_dollar/tests/test-build/index.rst b/sphinx_math_dollar/tests/test-root/index.rst
+similarity index 100%
+rename from sphinx_math_dollar/tests/test-build/index.rst
+rename to sphinx_math_dollar/tests/test-root/index.rst
+diff --git a/sphinx_math_dollar/tests/test-build/make.bat b/sphinx_math_dollar/tests/test-root/make.bat
+similarity index 100%
+rename from sphinx_math_dollar/tests/test-build/make.bat
+rename to sphinx_math_dollar/tests/test-root/make.bat
+diff --git a/sphinx_math_dollar/tests/test_extension.py b/sphinx_math_dollar/tests/test_extension.py
+index fa8cf72..8b967aa 100644
+--- a/sphinx_math_dollar/tests/test_extension.py
++++ b/sphinx_math_dollar/tests/test_extension.py
+@@ -1,10 +1,12 @@
+-import os
++import pytest
+ 
+-from sphinx_testing import with_app
+ 
+-@with_app(buildername='html', srcdir=os.path.join(os.path.dirname(__file__), 'test-build'),
+-          copy_srcdir_to_tmpdir=True)
+-def _test_sphinx_build(app, status, warning):
++def test(app):
++    app.build()
++
++
++@pytest.mark.sphinx(buildername='html')
++def test_sphinx_build(app):
+     app.build()
+     html = (app.outdir/'index.html').read_text()
+ 
+@@ -21,8 +23,4 @@ def _test_sphinx_build(app, status, warning):
+     assert r"\[math\]" not in html
+     assert r"\[nomath\]" not in html
+ 
+-    assert not status.read()
+-    assert not warning.read()
+ 
+-def test_sphinx_build():
+-    _test_sphinx_build()

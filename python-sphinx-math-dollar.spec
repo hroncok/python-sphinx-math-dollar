@@ -2,7 +2,7 @@
 
 Name:           python-%{srcname}
 Version:        1.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Sphinx extension to enable LaTeX math with $$
 
 License:        MIT
@@ -11,6 +11,10 @@ Source0:        https://github.com/sympy/%{srcname}/archive/%{version}/%{srcname
 # Update versioneer.py to fix FTBFS with python 3.11
 # See https://github.com/sympy/sphinx-math-dollar/issues/27
 Patch0:         %{name}-versioneer.patch
+# Drop the dependency on upstream dead sphinx-testing, use sphinx.testing instead
+# https://github.com/sympy/sphinx-math-dollar/commit/2a66b0b694
+# https://github.com/sympy/sphinx-math-dollar/pull/29
+Patch1:         %{name}-sphinx-testing.patch
 
 BuildArch:      noarch
 BuildRequires:  make
@@ -19,7 +23,6 @@ BuildRequires:  %{py3_dist pip}
 BuildRequires:  %{py3_dist pytest-doctestplus}
 BuildRequires:  %{py3_dist setuptools}
 BuildRequires:  %{py3_dist sphinx}
-BuildRequires:  %{py3_dist sphinx-testing}
 BuildRequires:  %{py3_dist wheel}
 
 %global _desc %{expand:
@@ -67,6 +70,9 @@ rm -f docs/_build/html/.{buildinfo,nojekyll}
 %license LICENSE
 
 %changelog
+* Thu Feb 17 2022 Miro Hrončok <mhroncok@redhat.com> - 1.2-7
+- Drop the dependency on upstream dead sphinx-testing, use sphinx.testing instead
+
 * Fri Jan 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.2-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
